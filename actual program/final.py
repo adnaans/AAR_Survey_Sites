@@ -145,11 +145,43 @@ corptestX = np.array(([1, 2,3,4,5], [1,1,1,9,2], [1,3,5,8,1], [1,2,4,1, 9]), dty
 corptestY = np.array(([0], [1], [1], [0]), dtype=float)
 
 
-NN = Neural_Network(Lambda=0.0001)
-T = trainer(NN)
+newsNeural = Neural_Network(Lambda=0.0001)
+newsTrainer = trainer(newsNeural)
 
-T.train(newstrainX, newstrainY, newstestX, newstestY)
+newsTrainer.train(newstrainX, newstrainY, newstestX, newstestY)
 
+corpNeural = Neural_Network(Lambda=0.0001)
+corpTrainer = trainer(corpNeural)
+
+corpTrainer.train(corptrainX, corptrainY, corptestX, corptestY)
+'''
 xxx = np.array(([1,2,1,9,8]), dtype=float)
 print('For NBC')
 print(NN.forward(xxx))
+'''
+typenet = raw_input("Enter in the site you are creating (for now only news or corporation) (0 for stop):")
+typenet = typenet.lower()
+while(typenet!="0"):
+    confirm = False
+    while(confirm == False):
+        if(typenet == "corporation"):
+            neuralNet = corpNeural
+            confirm = True
+        elif(typenet == "news"):
+            neuralNet = newsNeural
+            confirm = True
+        else:
+            typenet = raw_input("Sorry, but I didn't get that. Only corporation and news is supported right now. Please enter again:")
+            typenet = typenet.lower()
+
+    bgcolor = int(raw_input("Please input the background color number (White=1,Red=2,Orange=3,Yellow=4,Green=4,Blue=6,Purple=7,Gray=8,Black=9):"))
+    fontone = int(raw_input("Please input the main font family (Helvetica=1, Arial=2, Roboto=3, Times=4, Georgia=5, Oswald=6, SansSerif=7, Verdana=8):"))
+    fonttwo = int(raw_input("Please input the second main font family (Helvetica=1, Arial=2, Roboto=3, Times=4, Georgia=5, Oswald=6, SansSerif=7, Verdana=8):"))
+    fontcolorone = int(raw_input("Please input the first main font color number (White=1,Red=2,Orange=3,Yellow=4,Green=4,Blue=6,Purple=7,Gray=8,Black=9):"))
+    fontcolortwo = int(raw_input("Please input the second main font color number (White=1,Red=2,Orange=3,Yellow=4,Green=4,Blue=6,Purple=7,Gray=8,Black=9):"))
+
+    xxx = np.array(([bgcolor,fontone,fonttwo,fontcolorone,fontcolortwo]), dtype=float)
+    print("If the value is less than 0.5, it is bad. If the value is greater than 0.5, it is ok/good.")
+    print(neuralNet.forward(xxx))
+    typenet = raw_input("Enter in the site you are creating (for now only news or corporation) (0 for stop):")
+    typenet = typenet.lower()
