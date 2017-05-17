@@ -1,14 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-x = np.array(([3,5], [5,1], [10,2]), dtype=float)
-y = np.array(([75], [82], [93]), dtype=float)
-'''
-print x
-print y
-'''
-x = x/np.amax(x, axis=0)
-y = y/100
 
 class Neural_Network(object):
     def __init__(self, Lambda=0):
@@ -42,7 +34,7 @@ class Neural_Network(object):
     def costFunction(self, X, y):
         #Compute cost for given X,y, use weights already stored in class.
         self.yHat = self.forward(X)
-        J = 0.5*sum((y-self.yHat)**2)/X.shape[0] + (self.Lambda/2)*(np.sum(self.W1**2)+np.sum(self.W2**2))
+        J = 0.5*np.sum((y-self.yHat)**2)/X.shape[0] + (self.Lambda/2)*(np.sum(self.W1**2)+np.sum(self.W2**2))
         return J
 
     def costFunctionPrime(self, X, y):
@@ -138,21 +130,26 @@ class trainer(object):
 
 
 #Training Data:
-trainX = np.array(([1, 1,1,9,8], [9,4,2,9,9], [1,5,1,8,9], [1,1,5,9,8], [1,1,3,9,1], [1,1,2,9,1],[1,6,2,9,6],[1,1,1,9,1],[1,5,4,9,1],[1,1,1,9,1]), dtype=float)
-trainY = np.array(([1], [1], [1], [1], [1],[1],[1],[1]), dtype=float)
+newstrainX = np.array(([1, 1,1,9,8], [9,4,2,9,9], [1,5,1,8,9], [1,1,5,9,8], [1,1,3,9,1], [1,1,2,9,1],[1,6,2,9,6],[1,1,1,9,1],[1,5,4,9,1],[1,1,1,9,1], [5,2,4,5,7], [1, 2, 2, 9,9]), dtype=float)
+newstrainY = np.array(([1], [1], [1], [1], [1],[1],[1],[1],[1],[1], [0], [0]), dtype=float)
 
 #Testing Data:
-testX = np.array(([1, 2,3,4,5], [1,1,1,9,2], [1,3,5,8,1], [1,2,4,1, 9]), dtype=float)
-testY = np.array(([0], [1], [1], [0]), dtype=float)
+newstestX = np.array(([1, 2,3,4,5], [1,1,1,9,2], [1,3,5,8,1], [1,2,4,1, 9]), dtype=float)
+newstestY = np.array(([0], [1], [1], [0]), dtype=float)
 
-#Normalize:
-trainX = trainX/np.amax(trainX, axis=0)
-trainY = trainY/100 #Max test score is 100
+corptrainX = np.array(([1, 3,1,9,9], [1,7,7,8,9], [1,2,1,8,2], [1,1,8,8,6], [1,8,2,8,8],[1,1,2,8,6],[1,7,2,8,1],[1,7,7,8,9], [7,3,5,4,9], [4,2,6,5,2], [2,3,6,1,8]), dtype=float)
+corptrainY = np.array(([1], [1], [1], [1], [1],[1],[1],[1], [0], [0], [0]), dtype=float)
+
+#Testing Data:
+corptestX = np.array(([1, 2,3,4,5], [1,1,1,9,2], [1,3,5,8,1], [1,2,4,1, 9]), dtype=float)
+corptestY = np.array(([0], [1], [1], [0]), dtype=float)
 
 
 NN = Neural_Network(Lambda=0.0001)
 T = trainer(NN)
 
-xxx = np.array(([1,1,1,9,8]), dtype=float)
+T.train(newstrainX, newstrainY, newstestX, newstestY)
+
+xxx = np.array(([1,2,1,9,8]), dtype=float)
 print('For NBC')
 print(NN.forward(xxx))
